@@ -31,6 +31,7 @@ stations_metadata <-
     .url = configs$vegvesen_url
     ) 
 
+stations_metadata %>% head()
 
 #### 2: Transforming metadata
 
@@ -39,7 +40,6 @@ source("functions/data_transformations.r")
 stations_metadata_df <- 
   stations_metadata %>% 
   transform_metadata_to_df(.)
-
 
 #### 3: Testing metadata
 source("functions/data_tests.r")
@@ -61,9 +61,8 @@ stations_metadata_df %>%
   GQL(., .url = configs$vegvesen_url) %>%
   transform_volumes() %>% 
   ggplot(aes(x=from, y=volume)) + 
-  geom_line() + 
+  geom_point() + 
   theme_classic()
-
 
 
 
