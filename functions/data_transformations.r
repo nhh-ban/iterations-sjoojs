@@ -42,6 +42,3 @@ transform_volumes <- function(vol_qry) {
   
   return(df)
 }
-
-
-

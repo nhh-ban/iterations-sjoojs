@@ -1,4 +1,4 @@
-install.packages("glue")
+#install.packages("glue")
 library(glue)
 
 # GQL for volumes, task 4b
