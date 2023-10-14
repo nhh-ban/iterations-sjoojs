@@ -62,7 +62,7 @@ stations_metadata_df %>%
   transform_volumes() %>% 
   ggplot(aes(x=from, y=volume)) + 
   geom_point() + 
-  theme_classic() 
+  theme_classic() # Cannot get the graph in the chart, only the frame. Help?
 
 
 
