@@ -1,12 +1,10 @@
-install.packages("glue")
-library(glue)
 
 # GQL for volumes, task 4b
 vol_qry <- function(id, from, to) {
-  query <- glue('{
-    trafficData(trafficRegistrationPointId: <<id>>) {
+  query <- sprintf('{
+    trafficData(trafficRegistrationPointId: "%s") {
       volume {
-        byHour(from: <<from>>, to: <<to>>) {
+        byHour(from: "%s", to: "%s") {
           edges {
             node {
               from
@@ -21,8 +19,8 @@ vol_qry <- function(id, from, to) {
         }
       }
     }
-  }', .open = "<<", .close = ">>")
-  cat(query)
+  }', id, from, to)
+  return(query)
 }
 
 # testing
@@ -34,3 +32,5 @@ GQL(
   ),
   .url = configs$vegvesen_url
 )
+
+

@@ -29,9 +29,8 @@ stations_metadata <-
   GQL(
     query=gql_metadata_qry,
     .url = configs$vegvesen_url
-    ) 
+  ) 
 
-stations_metadata %>% head()
 
 #### 2: Transforming metadata
 
@@ -40,6 +39,7 @@ source("functions/data_transformations.r")
 stations_metadata_df <- 
   stations_metadata %>% 
   transform_metadata_to_df(.)
+
 
 #### 3: Testing metadata
 source("functions/data_tests.r")
@@ -61,8 +61,26 @@ stations_metadata_df %>%
   GQL(., .url = configs$vegvesen_url) %>%
   transform_volumes() %>% 
   ggplot(aes(x=from, y=volume)) + 
-  geom_point() + 
-  theme_classic() # Cannot get the graph in the chart, only the frame. Help?
+  geom_line() + 
+  theme_classic()
 
+#Task 6:
+stations_metadata_df %>% 
+  filter(latestData > Sys.Date() - days(7)) %>% 
+  sample_n(1) -> sttt # gives us stations (in order to see names)
 
+sttt %$% 
+  vol_qry(
+    id = id,
+    from = to_iso8601(latestData, -4),
+    to = to_iso8601(latestData, 0)
+  ) %>% 
+  GQL(., .url = configs$vegvesen_url) %>%
+  transform_volumes() %>% 
+  ggplot(aes(x=from, y=volume)) + 
+  geom_line() + 
+  labs(title = paste("Volume for:", sttt$name),
+       subtitle = "from last four days until now") +
+  theme_classic() # the 'sttt$name' ensures that we see the name of the traffic station
+# as this is a basic volume plot, i see no point in adding more text/legends to the plot
 
