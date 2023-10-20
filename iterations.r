@@ -31,6 +31,7 @@ stations_metadata <-
     .url = configs$vegvesen_url
     ) 
 
+stations_metadata %>% head()
 
 #### 2: Transforming metadata
 
@@ -39,7 +40,6 @@ source("functions/data_transformations.r")
 stations_metadata_df <- 
   stations_metadata %>% 
   transform_metadata_to_df(.)
-
 
 #### 3: Testing metadata
 source("functions/data_tests.r")
@@ -57,13 +57,12 @@ stations_metadata_df %>%
     id = id,
     from = to_iso8601(latestData, -4),
     to = to_iso8601(latestData, 0)
-  ) %>% 
-  GQL(., .url = configs$vegvesen_url) %>%
+  ) %>% GQL(., .url = configs$vegvesen_url) %>%
   transform_volumes() %>% 
   ggplot(aes(x=from, y=volume)) + 
-  geom_line() + 
+  geom_point() + 
   theme_classic()
 
-
-
+# For some reason, I do not seem to get the exact volume line in the ggplot
+# I just get the frame. I have tried to problemsolve, but I am stuck.
 
